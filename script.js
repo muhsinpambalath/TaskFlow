@@ -1,5 +1,5 @@
 let addTaskButton = document.getElementById("button-add");
-let searchButton = document.getElementById("search-button");
+let filterTask = document.getElementById("filter-task");
 let searchBar = document.getElementById("task-search");
 
 let addTaskInterface = document.querySelector(".add-task");
@@ -7,14 +7,26 @@ let overlay = document.querySelector(".overlay");
 let newTask = document.getElementById("new-task");
 let addButton = document.getElementById("add-new-task");
 let cancelButton = document.getElementById("cancel-new-task");
-let displayTasks = document.querySelector(".display-tasks");
+let fullTasks = document.querySelector(".display-tasks");
 
 let arr = [];
 
+function saveTask(){
+    localStorage.setItem("tasks",JSON.stringify(arr));
+}
+
+function loadTask(){
+    let existingTask = JSON.parse(localStorage.getItem("tasks"));
+    if( existingTask )
+    {
+        arr = existingTask;
+    }
+    updateView();
+}
 
 function addTask(){
     let exist = arr.some(taskName=>
-        taskName.task === newTask.value.trim()
+        taskName.task.toLowerCase() === newTask.value.trim().toLowerCase()
     );
     if(newTask.value.trim() != "" && !exist)
     {
@@ -23,12 +35,13 @@ function addTask(){
             complete: false
         };
         arr.push(taskObj);
-        displayTask(taskObj);
+        saveTask();
+        updateView();
     }
     else{
         if(newTask.value.trim() == "")
             alert("Enter a valid task");
-        if(exist == true)
+        if(exist)
             alert("Task Exists");
     }
     addTaskInterface.style.display="none";
@@ -36,43 +49,76 @@ function addTask(){
     newTask.value="";
 }
 
-function displayTask(taskObj){
-    let taskField = document.createElement("div");
-    taskField.classList.add("task-field")
-    displayTasks.append(taskField);
-    let checkBox = document.createElement("input");
-    checkBox.type="checkbox";
-    let task = document.createElement("span");
-    task.classList.add("task");
-    task.textContent = taskObj.task;
-    checkBox.addEventListener("change", (event)=>{
-        if(event.target.checked)
-        {
-            taskObj.complete = true;
-            task.style.textDecoration="line-through";
-        }
-        else
-        {
-            taskObj.complete = false;
-            task.style.textDecoration="none";
-        }
-    });
-    let deleteButton = document.createElement("button");
-    deleteButton.classList.add("delete-task");
-    deleteButton.textContent="Delete";
-    taskField.append(checkBox);
-    taskField.append(task);
-    taskField.append(deleteButton);
-    deleteButton.addEventListener("click",function(){
-        let i = arr.indexOf(taskObj);
-        deleteTask(i);
-        taskField.remove();
-    });
+function displayTasks(tasks = arr){
+    fullTasks.innerHTML="";
+    tasks.forEach(taskObj=>
+    {
+        let taskField = document.createElement("div");
+        taskField.classList.add("task-field")
+        fullTasks.append(taskField);
+        let checkBox = document.createElement("input");
+        checkBox.type="checkbox";
+        checkBox.checked = taskObj.complete;
+        checkBox.addEventListener("change",function(){
+            completeTask(taskObj);
+        });
+        let task = document.createElement("span");
+        task.classList.add("task");
+        task.textContent = taskObj.task;
+        let deleteButton = document.createElement("button");
+        deleteButton.classList.add("delete-task");
+        deleteButton.textContent="Delete";
+        taskField.append(checkBox);
+        taskField.append(task);
+        taskField.append(deleteButton);
+        deleteButton.addEventListener("click",function(){
+            let i = arr.indexOf(taskObj);
+            deleteTask(i);
+        });
+    }
+    )
 }
 
 function deleteTask(index){
     arr.splice(index,1);
+    saveTask()
+    updateView();
 }
+
+function completeTask(taskObj){
+    taskObj.complete=!taskObj.complete;
+    saveTask();
+    updateView();
+}
+
+function updateView()
+{
+    let tasks = arr;
+    
+    tasks = tasks.filter(taskObj=>
+        taskObj.task.toLowerCase().includes(searchBar.value.toLowerCase())
+    )
+
+    if(filterTask.value === "completed")
+    {
+        tasks = tasks.filter(taskObj =>
+            taskObj.complete
+        )
+    }
+    else if (filterTask.value === "pending")
+    {
+        tasks = tasks.filter(taskObj =>
+            !taskObj.complete
+        )
+    }
+
+
+
+    displayTasks(tasks);
+
+}
+
+loadTask();
 
 addTaskButton.addEventListener("click",function (){
     overlay.style.display= "flex";
@@ -95,4 +141,12 @@ cancelButton.addEventListener("click",function(){
     addTaskInterface.style.display="none";
     overlay.style.display= "none";
     newTask.value="";
+});
+
+searchBar.addEventListener("input",function(){
+    updateView();
+});
+
+filterTask.addEventListener("change",function(){
+    updateView();
 });

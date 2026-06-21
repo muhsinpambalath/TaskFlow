@@ -14,7 +14,13 @@
         <section id="search">
             <button id="button-add"><span class="plus">+</span>Task</button>
             <input type="text" placeholder="Search for Tasks" id="task-search">
-            <button id="search-button">Search</button>
+            <div class="dropdown">
+                <select name="filter" id="filter-task">
+                    <option value="all">All</option>
+                    <option value="completed">Completed</option>
+                    <option value="pending">Pending</option>
+                </select>
+            </div>
         </section>
 
         <div class="overlay">

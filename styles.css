@@ -40,13 +40,43 @@ header h1{
     width : 70%;
     font-size: 18px;
 }
-#search-button,#button-add{
+#button-add{
     padding: 16px 26px;
     border-radius: 20px;
     border: none;
     background-color: #272F3D;
     color: #fff;
     font-size: 18px;
+}
+div.dropdown{
+    position: relative;
+    display: inline-block;
+    width: 105px;
+}
+select{
+    -moz-appearance: none;
+    -o-appearance:none;
+    -ms-appearance:none;
+    appearance: none;
+
+    padding: 18px 26px 18px 10px;
+    border-radius: 20px;
+    text-align: center;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    background-color: #272F3D;
+    color: #fff;
+}
+div.dropdown::after{
+    content: "▼";
+    position: absolute;
+    top: 18px;
+    left: 90px;
+    scale: 0.8;
+}
+option{
+    background-color: #272F3D;
 }
 span.plus{
     background:transparent;
@@ -105,7 +135,7 @@ button.add-task-button,button.cancel-task-button{
     margin-right: 12px;
     background-color: #2D3748;
 }
-#search-button:hover,#button-add:hover,span.plus:hover,button.add-task-button:hover,button.cancel-task-button:hover{
+#button-add:hover,select:hover,span.plus:hover,button.add-task-button:hover,button.cancel-task-button:hover{
     scale: 1.02;
     cursor: pointer;
     background-color: #4b586d;
@@ -134,9 +164,10 @@ section.display-tasks{
     border-bottom: none;
     padding: 30px 38px ;
     border-radius: 20px;
-    height: 60vh;
+    height: 70vh;
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
+    margin-bottom: 0px;
 }
 div.task-field{
     display: flex;
