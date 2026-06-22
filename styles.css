@@ -213,3 +213,47 @@ button.delete-task:hover {
     cursor: pointer;
     transition: 0.3s ease;
 }
+div.empty-state{
+    display: flex;
+    pointer-events: none;
+    user-select: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    text-align: center;
+}
+div.empty-state img{
+    position: absolute;
+    top: 120px;
+    width: 380px;
+    background-color: transparent;
+    opacity: 0.20;
+}
+div.empty-state-text{
+    position: absolute;    
+    background-color: transparent;
+    top: 540px;
+    line-height: 32px;
+}
+div.empty-state-text h2{
+    font-size: 34px;
+    background-color: transparent;
+    color: rgba(255, 255, 255, 0.35);
+}
+div.empty-state-text p{
+    font-size: 1.4em;
+    background-color: transparent;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+@keyframes fadeIn {
+    from{
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
