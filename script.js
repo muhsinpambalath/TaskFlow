@@ -35,7 +35,13 @@ function displayEmptyState(img,txt,desc){
     note.classList.add("empty-state-text");
     if(img === "assets/not-found.svg")
     {
-        note.style.top="480px";
+        if(window.innerWidth <= 700)
+        {
+            note.classList.add("not-found-txt");
+        }
+        else{
+            note.style.top="480px";
+        }
     }
     let text = document.createElement("h2");
     text.textContent=txt;
@@ -95,8 +101,10 @@ function addTask(){
     if(newTask.value.trim() != "" && !exist)
     {
         let taskObj = {
+            id: Date.now(),
             task: newTask.value.trim(),
-            complete: false
+            complete: false,
+            isNew: true
         };
         arr.push(taskObj);
         saveTask();
@@ -120,6 +128,9 @@ function displayTasks(tasks = arr){
         let taskField = document.createElement("div");
         taskField.classList.add("task-field");
         fullTasks.append(taskField);
+        let forMobile = document.createElement("div");
+        forMobile.classList.add("task-info");
+        taskField.append(forMobile);
         let checkBox = document.createElement("input");
         checkBox.type="checkbox";
         checkBox.checked = taskObj.complete;
@@ -132,13 +143,23 @@ function displayTasks(tasks = arr){
         let deleteButton = document.createElement("button");
         deleteButton.classList.add("delete-task");
         deleteButton.textContent="Delete";
-        taskField.append(checkBox);
-        taskField.append(task);
+        forMobile.append(checkBox);
+        forMobile.append(task);
         taskField.append(deleteButton);
         deleteButton.addEventListener("click",function(){
             let i = arr.indexOf(taskObj);
-            deleteTask(i);
+            taskField.classList.add("removing");
+            taskField.addEventListener("animationend",()=>{
+                deleteTask(i);
+            })
         });
+        if(taskObj.isNew){
+            taskField.classList.add("adding");
+            taskObj.isNew = false;
+        }
+        if(taskObj.complete){
+            task.classList.add("completed");
+        }
     }
     )
 }

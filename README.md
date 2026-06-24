@@ -45,10 +45,12 @@ A modern task management web app built with HTML, CSS and Vanilla JavaScript.
 - Illustrations
 - UX improvements
 
-### V1.2 (Planned)
+### V1.2
+- Responsive mobile layout
+- Mobile UX improvements
+- Touch interaction improvements
 - Task animations
-- Hover effects
-- Better transitions
+- Overflow handling
 
 ### V2 (Planned)
 - Edit tasks
