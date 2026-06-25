@@ -121,7 +121,7 @@ div.add-task-interface{
     padding: 30px 20px;
     box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.5);           
     border-radius: 20px;
-    height: 30vh;
+    height: 25vh;
 }
 div.add-interface-button{
     display: flex;
@@ -175,7 +175,6 @@ div.task-field{
     padding: 10px 20px;
     border-radius: 12px;
     margin-bottom: 14px;
-    transition: 0.4s ease;
 }
 div.task-info{
     display: flex;
@@ -184,8 +183,7 @@ div.task-info{
     flex: 1;
     justify-content: center;
     background-color: transparent;
-    overflow: scroll;
-    scrollbar-width: none;
+    min-width: 0;
 }
 div.task-field.adding{
     animation: slideIn 0.4s ease;
@@ -200,14 +198,13 @@ div.task-field:hover{
     transition: 0.3s ease;
 }
 span.task{
-    flex: 1;
     text-align: center;
     background-color: transparent;
     font-size: 20px;
-    overflow: scroll;
-    scrollbar-width: none;
-    scroll-behavior: smooth;
-    margin-right: 15px;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
     transition: 0.3s;
 }
 input[type="checkbox"]{
@@ -375,8 +372,9 @@ div.empty-state-text p{
         font-size: 16px;
     }
     div.task-info{
-        flex: none;
+        flex: 1;
         justify-content: flex-start;
+        min-width: 0;
     }
     button.delete-task{
         padding: 14px 16px;

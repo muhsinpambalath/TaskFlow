@@ -19,7 +19,29 @@ A modern task management web app built with HTML, CSS and Vanilla JavaScript.
 
 ## Screenshots
 
+### Desktop
 
+![Desktop](screenshots/desktop.png)
+
+### Mobile (iPhone 12 Pro)
+
+![Mobile](screenshots/mobile.png)
+
+### Search
+
+![Search](screenshots/search.png)
+
+### Completed Tasks
+
+![Completed Tasks](screenshots/completed.png)
+
+### Pending Tasks
+
+![Pending Tasks](screenshots/pending.png)
+
+### Empty State
+
+![Empty State](screenshots/empty-state.png)
 
 ---
 
