@@ -9,6 +9,7 @@ let addButton = document.getElementById("add-new-task");
 let cancelButton = document.getElementById("cancel-new-task");
 let fullTasks = document.querySelector(".display-tasks");
 let emptyState = document.querySelector(".empty-state");
+let editingTask = null;
 
 let arr = [];
 
@@ -96,17 +97,24 @@ function updateEmptyState(state){
 
 function addTask(){
     let exist = arr.some(taskName=>
-        taskName.task.toLowerCase() === newTask.value.trim().toLowerCase()
+        taskName.task.toLowerCase() === newTask.value.trim().toLowerCase() && taskName !== editingTask
     );
     if(newTask.value.trim() != "" && !exist)
     {
-        let taskObj = {
-            id: Date.now(),
-            task: newTask.value.trim(),
-            complete: false,
-            isNew: true
-        };
-        arr.push(taskObj);
+        if(editingTask){
+            editingTask.task = newTask.value.trim();
+            editingTask.isEdited = true;
+        }
+        else{
+            let taskObj = {
+                id: Date.now(),
+                task: newTask.value.trim(),
+                complete: false,
+                isNew: true,
+                isEdited: false
+            };
+            arr.push(taskObj);
+        }
         saveTask();
         updateView();
     }
@@ -128,9 +136,16 @@ function displayTasks(tasks = arr){
         let taskField = document.createElement("div");
         taskField.classList.add("task-field");
         fullTasks.append(taskField);
-        let forMobile = document.createElement("div");
-        forMobile.classList.add("task-info");
-        taskField.append(forMobile);
+        let edit = document.createElement("i");
+        edit.classList.add("fal","fa-pencil","edit-icon");
+        taskField.append(edit);
+        edit.addEventListener("click",()=>
+        {
+            editTask(taskObj);
+        });
+        let taskInfo = document.createElement("div");
+        taskInfo.classList.add("task-info");
+        taskField.append(taskInfo);
         let checkBox = document.createElement("input");
         checkBox.type="checkbox";
         checkBox.checked = taskObj.complete;
@@ -143,8 +158,8 @@ function displayTasks(tasks = arr){
         let deleteButton = document.createElement("button");
         deleteButton.classList.add("delete-task");
         deleteButton.textContent="Delete";
-        forMobile.append(checkBox);
-        forMobile.append(task);
+        taskInfo.append(checkBox);
+        taskInfo.append(task);
         taskField.append(deleteButton);
         deleteButton.addEventListener("click",function(){
             let i = arr.indexOf(taskObj);
@@ -157,11 +172,28 @@ function displayTasks(tasks = arr){
             taskField.classList.add("adding");
             taskObj.isNew = false;
         }
+        if(taskObj.isEdited){
+            taskField.classList.add("editing");
+            taskField.addEventListener("animationend",()=>{
+                taskObj.isEdited = false;
+            });
+        }
         if(taskObj.complete){
             task.classList.add("completed");
         }
     }
     )
+}
+
+function editTask(taskObj){
+    let heading = document.getElementById("heading");
+    heading.innerHTML="Edit Task";
+    newTask.value = taskObj.task;
+    addButton.innerHTML="Save";
+    editingTask = taskObj;
+    overlay.style.display= "flex";
+    addTaskInterface.style.display="flex";
+    newTask.focus();
 }
 
 function deleteTask(index){
@@ -204,6 +236,11 @@ function updateView()
 loadTask();
 
 addTaskButton.addEventListener("click",function (){
+    editingTask = null;
+    let heading = document.getElementById("heading");
+    heading.innerHTML="Add Task";
+    newTask.value = "";
+    addButton.innerHTML="Add";
     overlay.style.display= "flex";
     addTaskInterface.style.display="flex";
     newTask.focus();
@@ -221,6 +258,7 @@ addButton.addEventListener("click",function(){
 });
 
 cancelButton.addEventListener("click",function(){
+    existingTask = null;
     addTaskInterface.style.display="none";
     overlay.style.display= "none";
     newTask.value="";

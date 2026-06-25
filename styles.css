@@ -123,6 +123,11 @@ div.add-task-interface{
     border-radius: 20px;
     height: 25vh;
 }
+div.add-task-interface h2{
+    background-color: transparent;
+    margin-bottom: 14px;
+}
+
 div.add-interface-button{
     display: flex;
     background-color: transparent;
@@ -172,7 +177,7 @@ div.task-field{
     align-items: center;
     justify-content: space-between;
     border: 1px solid rgba(128, 128, 128, 0.568);
-    padding: 10px 20px;
+    padding: 10px 20px 10px 16px;
     border-radius: 12px;
     margin-bottom: 14px;
 }
@@ -191,11 +196,31 @@ div.task-field.adding{
 div.task-field.removing{
     animation: slideOut 0.4s ease;
 }
+div.task-field.editing{
+    animation: quickGlow 0.4s ease;
+}
 div.task-field:hover{
     background-color: #4b586d;
     border: none;
     box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.6);
     transition: 0.3s ease;
+}
+div.task-field i.edit-icon{
+    opacity: 0.4;
+    margin-right: 8px;
+    padding: 6px;
+    font-size: 18px;
+    border-radius: 50%;
+    background-color: transparent;
+}
+div.task-field i.edit-icon:hover{
+    opacity: 1;
+    cursor: pointer;
+    font-size: 20px;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+    transition: 0.4s ease;
+    transform: rotate(360deg);
 }
 span.task{
     text-align: center;
@@ -303,6 +328,17 @@ div.empty-state-text p{
     }
 }
 
+@keyframes quickGlow {
+    0%{
+        background-color: #2D3748;
+    }
+    40%{
+        background-color: #6d7889;
+    }
+    100%{
+        background-color: #2D3748;
+    }
+}
 
 @media screen and (max-width:700px) {
     header h1{
