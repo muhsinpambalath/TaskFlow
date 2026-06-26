@@ -53,7 +53,7 @@ div.dropdown{
     display: inline-block;
     width: 105px;
 }
-select{
+select#filter-task{
     -moz-appearance: none;
     -o-appearance:none;
     -ms-appearance:none;
@@ -121,17 +121,102 @@ div.add-task-interface{
     padding: 30px 20px;
     box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.5);           
     border-radius: 20px;
-    height: 25vh;
+    gap: 20px;
 }
 div.add-task-interface h2{
     background-color: transparent;
-    margin-bottom: 14px;
 }
+div.add-task-info{
+    flex: 1;
+    align-self: flex-start;
+    align-content: center;
+    margin: 0px 0px 0px 20px;
+    font-size: 14px;
+    background: transparent;
+    opacity: .6;
+}
+#more-info{
+    font-weight: 100;
+    background-color: transparent;
+    transition: 0.4s ease;
+}
+label[for="toggle-icon"]{
+    margin-left: 2px;
+    font-size: 16px;
+    background: transparent;
+}
+div.add-task-info:hover,label:hover{
+    cursor: pointer;
+    scale: 1.02;
+    opacity: 1;
+    transition: 0.4s ease;
+}
+input#toggle-icon{
+    display: none;
+}
+#toggle-icon:checked + i{
+    transform: rotate(135deg);
+    transition: 0.4s ease;
+}
+div.task-options{
+    overflow: auto;
+    flex: 1;
+    display: none;
+    flex-direction: column;
+    align-self: normal;
+    padding: 16px 22px;
+    background-color: transparent;
+    gap: 20px;
+}
+div.task-options p{
+    background-color: transparent;
+}
+input#duedate{
+    align-self: center;
+    width: 80%;
+    padding: 10px 14px;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    color: #fff;
+}
+div.priority-select-container,div.category-select-container{
+    flex: 1;
+    display: flex;
+    position: relative;
+    align-self: center;
+    border: none;
+    border-radius: 10px;
+    width: 80%;
+}
+select#priority,select#category{
+    -moz-appearance: none;
+    -o-appearance:none;
+    -ms-appearance:none;
+    appearance: none;
 
+    flex: 1;
+    background-color: #2D3748;
+    padding: 10px 40px 10px 18px;
+    color: #fff;
+    align-self: center;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    font-size: 14px;
+}
+div.priority-select-container::after,div.category-select-container::after{
+    content: "▼";
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    scale: 0.6;
+    pointer-events: none;
+}
 div.add-interface-button{
     display: flex;
     background-color: transparent;
-    margin-top: 40px;
+    margin-top: 20px;
     gap: 80px;
 }
 button.add-task-button,button.cancel-task-button{
@@ -140,7 +225,7 @@ button.add-task-button,button.cancel-task-button{
     margin-right: 12px;
     background-color: #2D3748;
 }
-#button-add:hover,select:hover,span.plus:hover,button.add-task-button:hover,button.cancel-task-button:hover{
+#button-add:hover,select#filter-task:hover,span.plus:hover,button.add-task-button:hover,button.cancel-task-button:hover{
     scale: 1.02;
     cursor: pointer;
     background-color: #4b586d;

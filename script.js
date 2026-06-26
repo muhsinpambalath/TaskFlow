@@ -9,7 +9,12 @@ let addButton = document.getElementById("add-new-task");
 let cancelButton = document.getElementById("cancel-new-task");
 let fullTasks = document.querySelector(".display-tasks");
 let emptyState = document.querySelector(".empty-state");
+let expansion = document.querySelector(".task-options");
+let toggleExpansion = document.getElementById("toggle-icon");
 let editingTask = null;
+let dateBox = document.createElement("input");
+let prioritySelector = document.createElement("select");
+let categorySelector = document.createElement("select");
 
 let arr = [];
 
@@ -110,11 +115,18 @@ function addTask(){
                 id: Date.now(),
                 task: newTask.value.trim(),
                 complete: false,
+                dueDate : dateBox.value,
+                priority: prioritySelector.value,
+                category: categorySelector.value,
+                updatedAt: null,
                 isNew: true,
                 isEdited: false
             };
             arr.push(taskObj);
         }
+        arr.forEach(()=>{
+            console.log(arr);
+        })
         saveTask();
         updateView();
     }
@@ -127,6 +139,88 @@ function addTask(){
     addTaskInterface.style.display="none";
     overlay.style.display= "none";
     newTask.value="";
+}
+
+function createDateField(){
+    let dueDate = document.createElement("p");
+    dueDate.innerHTML="Due Date :";
+    dateBox.type="date";
+    dateBox.id="duedate";
+    expansion.append(dueDate);
+    expansion.append(dateBox);
+}
+
+function createPriorityField(){
+    let priorityHeading = document.createElement("p");
+    priorityHeading.innerHTML="Priority :";
+    let priorityContainer = document.createElement("div");
+    priorityContainer.classList.add("priority-select-container");
+    prioritySelector.id="priority";
+    priorityContainer.append(prioritySelector);
+    let auto = document.createElement("option");
+    auto.value = "auto";
+    auto.innerHTML="Auto";
+    let low = document.createElement("option");
+    low.value = "low";
+    low.innerHTML="Low";
+    let medium = document.createElement("option");
+    medium.value = "medium";
+    medium.innerHTML="Medium";
+    let high = document.createElement("option");
+    high.value = "high";
+    high.innerHTML="High";
+    expansion.append(priorityHeading);
+    expansion.append(priorityContainer);
+    prioritySelector.append(auto);
+    prioritySelector.append(low);
+    prioritySelector.append(medium);
+    prioritySelector.append(high);
+}
+
+function createCategoryField(){
+    let categoryHeading = document.createElement("p");
+    categoryHeading.innerHTML="Category :";
+    let categoryContainer = document.createElement("div");
+    categoryContainer.classList.add("category-select-container");
+    categorySelector.id="category";
+    let none = document.createElement("option");
+    none.value = "none";
+    none.innerHTML="None";
+    let personal = document.createElement("option");
+    personal.value = "personal";
+    personal.innerHTML="Personal";
+    let study = document.createElement("option");
+    study.value = "study";
+    study.innerHTML="Study";
+    let work = document.createElement("option");
+    work.value = "work";
+    work.innerHTML="Work";
+    let finance = document.createElement("option");
+    finance.value = "finance";
+    finance.innerHTML="Finance";
+    let health = document.createElement("option");
+    health.value = "health";
+    health.innerHTML="Health";
+    let shopping = document.createElement("option");
+    shopping.value = "shopping";
+    shopping.innerHTML="Shopping";
+    expansion.append(categoryHeading);
+    expansion.append(categoryContainer);
+    categoryContainer.append(categorySelector);
+    categorySelector.append(none);
+    categorySelector.append(personal);
+    categorySelector.append(study);
+    categorySelector.append(work);
+    categorySelector.append(finance);
+    categorySelector.append(health);
+    categorySelector.append(shopping);
+}
+
+function extendTaskOption(){
+    createDateField();
+    createPriorityField();
+    createCategoryField();
+
 }
 
 function displayTasks(tasks = arr){
@@ -166,16 +260,20 @@ function displayTasks(tasks = arr){
             taskField.classList.add("removing");
             taskField.addEventListener("animationend",()=>{
                 deleteTask(i);
-            })
+            });
         });
         if(taskObj.isNew){
             taskField.classList.add("adding");
             taskObj.isNew = false;
+            taskField.addEventListener("animationend",()=>{
+                taskField.classList.remove("adding");
+            });
         }
         if(taskObj.isEdited){
             taskField.classList.add("editing");
             taskField.addEventListener("animationend",()=>{
                 taskObj.isEdited = false;
+                taskField.classList.remove("editing");
             });
         }
         if(taskObj.complete){
@@ -257,8 +355,23 @@ addButton.addEventListener("click",function(){
     addTask();
 });
 
+toggleExpansion.addEventListener("change",(event)=>{
+    if(event.target.checked === true)
+    {
+        expansion.style.display="flex";
+        extendTaskOption();
+    }
+    else{
+        expansion.innerHTML="";
+        expansion.style.display="none";
+    }
+});
+
 cancelButton.addEventListener("click",function(){
     existingTask = null;
+    expansion.innerHTML="";
+    expansion.style.display="none";
+    toggleExpansion.checked=false;
     addTaskInterface.style.display="none";
     overlay.style.display= "none";
     newTask.value="";
