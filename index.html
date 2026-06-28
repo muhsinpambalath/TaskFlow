@@ -29,23 +29,47 @@
         </div>
 
         <div class="overlay">
-        <section class="add-task">
-            <div class="add-task-interface">
-                <h2 id="heading"></h2>
-                <input type="text" placeholder="Enter The Task" class="task-text" id="new-task">
-                <div class="add-task-info" id="options">
-                    <input type="checkbox" id="toggle-icon">
-                    <i class="fas fa-plus" id="more-info"></i>
-                    <label for="toggle-icon">More Options</label>
+            <section class="show-task-details">
+                <div class="task-details">        
+                    <i class="fa-solid fa-xmark" id="close-details"></i>  
+                    <h2>Task Details</h2>
+                    <div class="task-detail">
+                        <h3 class="task-in-detail-panel"></h3>
+                        <span class="status-in-detail-panel"></span>
+                    </div>
+                    <div class ="capsule-space">
+                        <div class="date-space">
+                            <p>Due Date :</p>
+                            <span class="details-in-panel" id="date-in-details"></span>
+                        </div>
+                        <div class="capsules">
+                            <span class="details-in-panel" id="priority-in-details"></span>
+                            <span class="details-in-panel" id="category-in-details"></span>
+                        </div>
+                    </div>
+                    <p id="createdat">Created At</p>
+                    <span class="details-in-panel" id="createdat-in-details"></span>
+                    <div class="edit-n-delete">
+                    </div>
                 </div>
-                <div class="task-options">
+            </section>
+            <section class="add-task">
+                <div class="add-task-interface">
+                    <h2 id="heading"></h2>
+                    <input type="text" placeholder="Enter The Task" class="task-text" id="new-task">
+                    <div class="add-task-info" id="options">
+                        <input type="checkbox" id="toggle-icon">
+                        <i class="fas fa-plus" id="more-info"></i>
+                        <label for="toggle-icon">More Options</label>
+                    </div>
+                    <div class="task-options">
+                    </div>
+                    <div class="add-interface-button">
+                        <button class="cancel-task-button" id="cancel-new-task">Cancel</button>
+                        <button class="add-task-button" id="add-new-task"></button>
+                    </div>
                 </div>
-                <div class="add-interface-button">
-                    <button class="cancel-task-button" id="cancel-new-task">Cancel</button>
-                    <button class="add-task-button" id="add-new-task"></button>
-                </div>
-            </div>
-        </section>
+            </section>
         </div>
 
         <section class="display-tasks">
