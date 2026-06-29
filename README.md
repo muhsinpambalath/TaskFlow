@@ -74,11 +74,15 @@ A modern task management web app built with HTML, CSS and Vanilla JavaScript.
 - Task animations
 - Overflow handling
 
-### V2 (Planned)
+### V2
 - Edit tasks
+- Task details modal
 - Due dates
 - Categories
 - Priority system
+- Task metadata
+- UI polish
+- Interaction improvements
 
 ---
 
