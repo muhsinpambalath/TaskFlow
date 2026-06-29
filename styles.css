@@ -101,6 +101,7 @@ div.overlay{
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    
 }
 section.add-task{
     display: flex;
@@ -126,6 +127,7 @@ div.add-task-interface{
     max-height: 90vh;
     overflow-x: hidden;
     overflow-y: auto;
+    transition: 0.4s ease;
 }
 div.add-task-interface h2{
     background-color: transparent;
@@ -168,7 +170,7 @@ input#toggle-icon{
 }
 div.task-options{
     flex: 1;
-    display: none;
+    display: flex;
     flex-direction: column;
     align-self: normal;
     padding: 16px 22px;
@@ -232,6 +234,16 @@ button.add-task-button,button.cancel-task-button{
     text-align: center;
     margin-right: 12px;
     background-color: #2D3748;
+}
+div.task-options.open{
+    max-height: 500px;
+    opacity: 1;
+}
+div.task-options.close{
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 0.4s ease;
 }
 #button-add:hover,select#filter-task:hover,span.plus:hover,button.add-task-button:hover,button.cancel-task-button:hover{
     scale: 1.02;
@@ -525,12 +537,6 @@ button.delete-task:hover {
     }
 }
 
-@keyframes revealOption {
-    0%{
-        
-    }
-}
-
 @keyframes slideIn {
     0%{
         opacity: 0;
@@ -565,6 +571,16 @@ button.delete-task:hover {
     }
 }
 
+@keyframes reveal {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
+
 @media screen and (max-width:1440px){
     div.task-details{
         width: 55%;
@@ -577,14 +593,14 @@ button.delete-task:hover {
 }
 @media screen and (max-width:700px) {
     header h1{
-        padding: 26px 12px;
+        padding: 20px 12px;
         font-size: 30px;
     }
     section.display-tasks{
         padding: 24px 16px;
         margin: 18px 20px;
     }
-    button,select,input{
+    button,select,input,#options{
         -webkit-tap-highlight-color: transparent;
     }
     #button-add{
@@ -652,6 +668,7 @@ button.delete-task:hover {
     }
     span.task{
         font-size: 16px;
+        text-align: start;
     }
     div.empty-state img {
         width: 220px;
@@ -687,6 +704,12 @@ button.delete-task:hover {
     div.task-details span.details-in-panel {
         font-size: 20px;
     }
+    input#duedate{
+        width: 100%;
+    }
+    div.priority-select-container, div.category-select-container{
+        width: 100%;
+    }
 }
 @media screen and (max-width:640px) {
     #button-add{
@@ -710,6 +733,9 @@ button.delete-task:hover {
     input.task-text{
         width: 100%;
     }
+    div.add-task-interface{
+        width: 90%;
+    }
     div.add-interface-button{
         gap: 40px;
     }
@@ -718,9 +744,19 @@ button.delete-task:hover {
     div.edit-n-delete{
         gap: 40px;
     }
+    div.add-task-interface{
+        width: 90%;
+    }
+    #button-add{
+        padding-left: 10px;
+    }
 }
-@media screen and (max-height:680px){
-    div.edit-n-delete{
-        margin-top: 0;
+@media screen and (max-width:340px){
+    
+    div.add-task-interface{
+        width: 90%;
+    }
+    div.add-interface-button{
+        gap: 10px;
     }
 }

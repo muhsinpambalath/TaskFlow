@@ -230,6 +230,11 @@ function createCategoryField(){
 }
 
 function extendTaskOption(){
+    expansion.classList.remove("close");
+    expansion.classList.add("open");
+    expansion.innerHTML="";
+    prioritySelector.innerHTML="";
+    categorySelector.innerHTML="";
     expansion.style.display="flex";
     createDateField();
     createPriorityField();
@@ -238,11 +243,10 @@ function extendTaskOption(){
 }
 
 function closeTaskOption(){
-    dateBox.value="";
-    categorySelector.innerHTML="";
-    prioritySelector.innerHTML="";
-    expansion.innerHTML="";
+    expansion.classList.remove("open");
+    expansion.classList.add("close");
     expansion.style.display="none";
+    expansion.innerHTML="";
     toggleExpansion.checked=false;
 }
 
@@ -293,13 +297,7 @@ function displayTasks(tasks = arr){
     )
 }
 
-function openTaskDetails(taskObj,taskField){
-    overlay.style.display="flex";
-    addTaskInterface.style.display="none";
-    showDetails.style.display="flex";
-    taskDetails.innerHTML=taskObj.task;
-    let editNdelete = document.querySelector(".edit-n-delete");
-    editNdelete.innerHTML="";
+function showStatusOnModal(taskObj){
     if(taskObj.complete){
         statusDetails.innerHTML="Completed";
         statusDetails.style.backgroundColor ="rgba(0, 255, 0, 0.3)";
@@ -308,19 +306,18 @@ function openTaskDetails(taskObj,taskField){
         statusDetails.innerHTML="Pending";
         statusDetails.style.backgroundColor ="rgba(255, 0, 0, 0.5)";
     }
+}
+
+function showDueOnModal(taskObj){
     if(taskObj.dueDate==="")
         dateDetails.innerHTML="None";
     else{
         const dueDate = new Date(taskObj.dueDate);
-        formatDueDate(dueDate);
+        dateDetails.innerHTML=formatDueDate(dueDate);
     }
-    
-    priorityDetails.innerHTML=taskObj.priority;
-    priorityScheduling(taskObj.priority);
-    
-    const createdAtTime = new Date(taskObj.id);
-    formatCreatedAt(createdAtTime);
-    
+}
+
+function showCategoryOnModal(taskObj){
     if(taskObj.category===""){
         categoryDetails.classList.remove("border");
         categoryDetails.style.display="none";
@@ -329,12 +326,35 @@ function openTaskDetails(taskObj,taskField){
         categoryDetails.classList.add("border")
         categoryDetails.innerHTML=taskObj.category;
     }
+}
+
+function openTaskDetails(taskObj,taskField){
+    overlay.style.display="flex";
+    overlay.style.animation="reveal 0.4s ease";
+    addTaskInterface.style.display="none";
+    showDetails.style.display="flex";
+    showDetails.style.animation="reveal 0.4s ease";
+    taskDetails.innerHTML=taskObj.task;
+    let editNdelete = document.querySelector(".edit-n-delete");
+    editNdelete.innerHTML="";
+
+    showStatusOnModal(taskObj);
+
+    showDueOnModal(taskObj);
+    
+    priorityDetails.innerHTML=taskObj.priority;
+    priorityScheduling(taskObj.priority);
+    
+    const createdAtTime = new Date(taskObj.id);
+    formatCreatedAt(createdAtTime);
+    
+    showCategoryOnModal(taskObj);
+    
     let edit = document.createElement("button");
     edit.classList.add("edit-button");
     edit.textContent="Edit";
     edit.addEventListener("click",()=>
-    {
-        console.log("editChecked");
+    {   
         overlay.style.display= "none";
         showDetails.style.display="none";
         editTask(taskObj);
@@ -382,17 +402,27 @@ function editTask(taskObj){
     let heading = document.getElementById("heading");
     heading.innerHTML="Edit Task";
     toggleExpansion.checked=true;
+    if(window.innerHeight <= 800 && toggleExpansion.checked===true){
+        placeTop.style.top="8%";
+    }
     options.disabled=true;
     options.style.display="none";
     extendTaskOption();
     newTask.value = taskObj.task;
     dateBox.value = taskObj.dueDate;
-    prioritySelector.value = taskObj.priority;
-    categorySelector.value = taskObj.category;
+    if(taskObj.priority==="")
+        prioritySelector.value = "auto";
+    else
+        prioritySelector.value = taskObj.priority;
+    if(taskObj.category==="")
+        categorySelector.value = "none";
+    else
+        categorySelector.value = taskObj.category;
     addButton.innerHTML="Save";
     editingTask = taskObj;
     overlay.style.display= "flex";
     addTaskInterface.style.display="flex";
+    addTaskInterface.style.animation="reveal 0.4s ease";
     newTask.focus();
 }
 
@@ -415,20 +445,23 @@ function formatDueDate(dueDate){
     const day = Math.floor(daydiff);
     if(day < -1)
         {
-            dateDetails.innerHTML=dueDate.toLocaleDateString("en-GB",{
+            return dueDate.toLocaleDateString("en-GB",{
                 day: "numeric",
                 month: "short",
                 year: "numeric"
             });
         }
     else if(day > 0){
-        dateDetails.innerHTML="Over Due";
+        let overDue ="Over Due";
+        return overDue;
     }
     else if(day === -1){
-        dateDetails.innerHTML="Tomorrow";
+        let tmrw ="Tomorrow";
+        return tmrw;
     }
     else{
-        dateDetails.innerHTML="Today";
+        let today ="Today";
+        return today;
     }
 }
 
@@ -498,6 +531,7 @@ loadTask();
 
 addTaskButton.addEventListener("click",function (){
     placeTop.style.top="30%";
+    expansion.style.display="none";
     editingTask = null;
     showDetails.style.display="none";
     let heading = document.getElementById("heading");
@@ -510,6 +544,7 @@ addTaskButton.addEventListener("click",function (){
     options.style.display="block";
     addButton.innerHTML="Add";
     overlay.style.display= "flex";
+    overlay.style.animation="reveal 0.4s ease";
     addTaskInterface.style.display="flex";
     newTask.focus();
 });
@@ -528,7 +563,11 @@ addButton.addEventListener("click",function(){
 toggleExpansion.addEventListener("change",(event)=>{
     if(event.target.checked === true)
     {
-        placeTop.style.top="10%";
+        if(window.innerHeight <= 800){
+            placeTop.style.top="5%";
+        }else{
+            placeTop.style.top="15%";
+        }
         extendTaskOption();
     }
     else{
@@ -559,4 +598,11 @@ filterTask.addEventListener("change",function(){
 closeDetailsButton.addEventListener("click",()=>{
     overlay.style.display= "none";
     showDetails.style.display="none";
+});
+
+showDetails.addEventListener("animationend",()=>{
+    showDetails.style.animation="none";
+});
+overlay.addEventListener("animationend",()=>{
+    overlay.style.animation="none";
 });
